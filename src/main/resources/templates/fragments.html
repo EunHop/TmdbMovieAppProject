@@ -1,0 +1,172 @@
+<!DOCTYPE HTML>
+<html
+    lang="ko"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<!-- fragment header를 정의합니다. -->
+<head th:fragment="header">
+  <title>EunHop Movie App</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="영화나 TV프로그램을 검색해보세요.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="/css/header.css">
+  <link rel="stylesheet" type="text/css" href="/css/footer.css">
+  <link rel="shortcut icon" type="image/x-icon" href="/images/eunhop-logo.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;500;700&family=Roboto:ital,wght@1,300;1,500;1,700&display=swap"
+      rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="/js/index.js" defer></script>
+</head>
+<body>
+<!-- fragment navigation bar를 정의합니다. -->
+<div class="header" th:fragment="nav">
+  <div class="nav">
+    <div class="mobile_menu">
+      <span id="menu" class="google-icon" title="menu">menu</span>
+    </div>
+    <div class="nav_to_right">
+      <ul>
+        <li>
+          <a th:href="@{/}">
+            <img src="/images/eunhop-logo.png" alt="Logo">
+            <span class="nav_title">MovieApp</span>
+          </a>
+        </li>
+        <li>
+          <!-- 로그인 한 사람 모두 -->
+          <a sec:authorize="hasRole('USER') || hasRole('USER_WITHOUT_WRITE')" th:href="@{/my_wishlist/movie}">
+            <span class="google-icon" title="WishList">favorite</span>
+            <span class="desktop-header">관심목록</span>
+          </a>
+        </li>
+        <li>
+          <!-- 로그인 한 사람 모두 -->
+          <a sec:authorize="hasRole('ADMIN')" th:href="@{/user/management(pageNo=0)}">
+            <span class="google-icon" title="manage_accounts">manage_accounts</span>
+            <span class="desktop-header">유저관리</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/notice(pageNo=0)}">
+            <span class="google-icon" title="Notice">info</span>
+            <span class="desktop-header">공지사항</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="nav_to_left">
+      <ul>
+        <li>
+          <!-- 로그인 안한 사람만 -->
+          <a sec:authorize="!isAuthenticated()" th:href="@{/signup}">
+          <span class="google-icon" title="Sign Up">
+          <span class="desktop-header">회원가입</span>
+            person_add</span>
+          </a>
+        </li>
+        <li>
+          <!-- 로그인 안한 사람만 -->
+          <a sec:authorize="!isAuthenticated()" th:href="@{/login}">
+          <span class="google-icon" title="Login">
+            <span class="desktop-header">로그인</span>
+            login</span>
+          </a>
+        </li>
+        <li>
+          <!-- 로그인한 사람만 -->
+          <span sec:authorize="isAuthenticated()" class="desktop-header" th:text="${#authentication.principal.user.name+'님'}"></span>
+        </li>
+        <li>
+          <!-- 로그인한 사람만 -->
+          <a sec:authorize="isAuthenticated()" th:href="@{/logout}">
+          <span class="google-icon" title="Logout">
+          <span class="desktop-header">로그아웃</span>
+            logout</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="mobile_slide" id="mobile_slide">
+    <div class="mobile_slide_title">
+      슬라이드
+    </div>
+    <ul>
+      <li sec:authorize="hasRole('USER') || hasRole('USER_WITHOUT_WRITE')">
+        <!-- 로그인 한 사람 모두 -->
+        <a th:href="@{/my_wishlist/movie}">
+          <span class="google-icon" title="WishList">favorite</span>
+          <span class="desktop-header">관심목록</span>
+        </a>
+      </li>
+      <li sec:authorize="hasRole('ADMIN')">
+        <!-- 로그인 한 사람 모두 -->
+        <a th:href="@{/user/management(pageNo=0)}">
+          <span class="google-icon" title="manage_accounts">manage_accounts</span>
+          <span class="desktop-header">유저관리</span>
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/notice(pageNo=0)}">
+          <span class="google-icon" title="Notice">info</span>
+          <span class="desktop-header">공지사항</span>
+        </a>
+      </li>
+      <li sec:authorize="!isAuthenticated()">
+        <!-- 로그인 안한 사람만 -->
+        <a th:href="@{/login}">
+          <span class="google-icon" title="Login">login</span>
+          <span class="desktop-header">로그인</span>
+        </a>
+      </li>
+      <li sec:authorize="!isAuthenticated()">
+        <!-- 로그인 안한 사람만 -->
+        <a th:href="@{/signup}">
+          <span class="google-icon" title="Sign Up">person_add</span>
+          <span class="desktop-header">회원가입</span>
+        </a>
+      </li>
+      <li sec:authorize="isAuthenticated()">
+        <!-- 로그인한 사람만 -->
+        <span sec:authorize="isAuthenticated()" class="desktop-header" th:text="${#authentication.principal.user.name+'님'}"></span>
+      </li>
+      <li sec:authorize="isAuthenticated()">
+        <!-- 로그인한 사람만 -->
+        <a th:href="@{/logout}">
+          <span class="google-icon" title="Logout">logout</span>
+          <span class="desktop-header">로그아웃</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="footer" th:fragment="footer">
+  <div class="footer_wrapper">
+    <div class="footer_left">
+      <a href="javascript:;" class="logo">
+        <img src="/images/eunhop-logo.png" alt="Logo">
+        <span class="footer_title">MovieApp</span>
+      </a>
+    </div>
+    <div class="footer_right">
+      <div>
+        <span class="mail-icon">mail</span>
+        <span>thffoa99@gmail.com</span>
+      </div>
+      <div>
+        Copyright ⓒ <a href="https://github.com/EunHop/TmdbMovieApp" target="_blank">Github_EunHop</a> All rights
+        reserved.
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+.container {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.search_wrapper {
+    padding: 9rem 3rem;
+    width: calc(100% - 6rem);
+    max-width: 79rem;
+    background-size: cover;
+    background-position: center;
+}
+.search_title {
+    margin-bottom: 2rem;
+}
+.search_title h2 {
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 700;
+}
+.search_title h3 {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 500;
+    white-space: break-spaces;
+}
+.search {
+    height: 2.5rem;
+    width: 100%;
+    position: relative;
+}
+.search input {
+    width: 95%;
+    height: 2.5rem;
+    border-radius: 2rem;
+    padding: 0 2.5%;
+    border: 0;
+    font-size: 1rem;
+    font-weight: 300;
+    outline: none;
+}
+.search button {
+    color: #fff;
+    border-radius: 2rem;
+    height: 2.5rem;
+    width: 5rem;
+    position: absolute;
+    right: 0;
+    border: 0;
+    background: #0d63fd;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: none;
+}
+.search button:hover {
+    cursor: pointer;
+}
+.movies {
+    margin: 1rem 2rem;
+    padding: 1rem 0;
+    width: calc(100% - 4rem);
+    max-width: 85rem;
+    background-color: #E9ECEF;
+    border-radius: 1rem;
+}
+.movies_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.column {
+    margin: 0.5rem 1rem;
+}
+.column h2 {
+    font-size: 2rem;
+    font-weight: 700;
+}
+.media_wrapper {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 300;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.column a {
+    display: block;
+    color: #000;
+    margin-right: 0.5rem;
+}
+.selected {
+    background: #cbd2d9;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+}
+.media_size {
+    font-weight: 500;
+    font-size: 2rem;
+}
+.movie {
+    background-image: url("../images/default-no-image.jpg");
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    width: 10rem;
+    height: 15rem;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    position: relative;
+}
+.info {
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 86%;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    padding: 1rem 7%;
+    background-color: rgba(0,0,0,0.3);
+    backdrop-filter: blur(1rem);
+}
+.info_title {
+    margin-top: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.page-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+.page-wrapper a {
+    font-size: 1.2rem;
+    color: #000;
+}
+.num-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.num {
+    margin: 0.5rem;
+}
+.previous {
+    margin: 0.5rem;
+}
+.next {
+    margin: 0.5rem;
+}
+.current {
+    border: 0.1rem solid;
+}
+.page-icon {
+    font-family: 'Material Symbols Rounded';
+    font-size: 1rem;
+}
+@media (max-width: 650px) {
+    .search_wrapper {
+        padding: 3rem 1rem;
+        width: 100%;
+    }
+    .search_title h2 {
+        font-size: 2.5rem;
+    }
+    .search_title h3 {
+        font-size: 1.5rem;
+    }
+    .search input {
+        font-size: 0.8rem;
+    }
+    .search button {
+        font-size: 0.8rem;
+    }
+    .column {
+        font-size: 1.5rem;
+    }
+    .movies {
+        width: calc(100% - 1rem);
+        margin: 1rem 0.5rem;
+    }
+    .movie {
+        width: 6rem;
+        height: 10rem;
+    }
+    .info {
+        font-size: 0.7rem;
+    }
+    .media_size {
+        margin-left: 0;
+    }
+    .page-wrapper a {
+        font-size: 1.5rem;
+    }
+}

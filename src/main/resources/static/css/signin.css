@@ -1,0 +1,83 @@
+.container {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    width: 100%;
+    height: calc(100vh - 12rem);
+    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url("https://image.tmdb.org/t/p/w1280/14QbnygCuTO0vl7CAFmPf1fgZfV.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.form {
+    text-align: center;
+}
+.form h2 {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
+}
+.form .form-wrapper {
+    display: inline-block;
+}
+.form div label {
+    margin-top: 0.5rem;
+    color: #fff;
+    display: block;
+    float: left;
+    height: 2rem;
+    line-height: 2rem;
+}
+.form div input {
+    width: 15rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+    font-weight: 300;
+    border: 0;
+    padding-left: 1rem;
+}
+.error_msg {
+    color: red;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 16rem;
+    height: 2rem;
+    margin-top: 0.5rem;
+    background: #F8D7DA;
+    font-weight: 500;
+}
+.form-wrapper button {
+    color: #fff;
+    border-radius: 0.5rem;
+    width: 16rem;
+    height: 2.5rem;
+    border: 0;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    background: #0d63fd;
+    font-size: 1rem;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+}
+.sns-img {
+    margin-top: 1rem;
+    width: 16rem;
+    height: 3rem;
+}
+.sns-google-img {
+    margin-top: 1rem;
+    width: 16.5rem;
+    height: 3.5rem;
+}
+
+@media (max-width: 650px) {
+    .container {
+        height: calc(100vh - 11rem);
+    }
+}

@@ -1,0 +1,56 @@
+# Database ??
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${DB_URL}:${DB_PORT}/${DB_NAME}?useUnicode=true&characterEncoding=utf8
+    username: ${MYSQL_ID}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none  #???? ??? ??? drop?? ?? create?
+    properties:
+      hibernate:
+        format_sql: true  #?? sql? ? ???
+        default_batch_fetch_size: 100 #selete? where ?? in ? ???? ?????? ??? ??? ????
+
+  # thymeleaf ??
+  thymeleaf:
+    cache: false
+    # OAuth2 id, secret
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      quiet-period: 900ms
+
+  data:
+    rest:
+      base-path: /api
+      detection-strategy: default
+  profiles:
+    include: API-KEY
+  codec:
+    max-in-memory-size: 10MB
+
+tmdb:
+  api:
+    key: ${TMDB_API_KEY}
+
+jwt:
+  key:
+    one: ${JWT_KEY_ONE}
+    two: ${JWT_KEY_TWO}
+    three: ${JWT_KEY_THREE}
+
+server:
+  forward-headers-strategy: FRAMEWORK

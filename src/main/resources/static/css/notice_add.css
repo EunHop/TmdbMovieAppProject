@@ -1,0 +1,86 @@
+.container {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    width: 100%;
+    min-height: calc(100vh - 12rem);
+    display: flex;
+    justify-content: center;
+}
+.notice_add_container {
+    max-width: 70rem;
+    margin: 0 2rem 1rem;
+    padding-top: 1rem;
+    width: 100%;
+}
+.h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 1rem 0;
+    border-bottom: 0.01rem solid lightgray;
+}
+.notice_username_wrapper {
+    padding: 0.5rem;
+    border-bottom: 0.01rem solid lightgray;
+    display: flex;
+    align-items: center;
+}
+.notice_username {
+    display: inline-block;
+    width: 4rem;
+}
+.notice_add_username {
+    width: 100%;
+    height: 2rem;
+    line-height: 2rem;
+}
+.notice_title_wrapper {
+    padding: 0.5rem;
+    border-bottom: 0.01rem solid lightgray;
+    display: flex;
+    align-items: center;
+}
+.notice_title {
+    display: inline-block;
+    width: 4rem;
+}
+.notice_add_title {
+    width: 100%;
+    height: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 0.01rem solid black;
+}
+.notice_content_wrapper {
+    padding: 0.5rem;
+    border-bottom: 0.01rem solid lightgray;
+    display: flex;
+    align-items: center;
+}
+.notice_content_text {
+    display: inline-block;
+    width: 4rem;
+}
+.notice_add_content {
+    width: 100%;
+    height: 15rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 0.01rem solid black;
+}
+.notice_add_button {
+    margin-top: 0.5rem;
+    float: right;
+    color: black;
+    width: 5rem;
+    height: 2rem;
+    text-align: center;
+    line-height: 2rem;
+    border-radius: 0.5rem;
+    border: 0.01rem solid black;
+    background-color: lightgrey;
+    cursor: pointer;
+}
+@media (max-width: 650px) {
+    .notice_add_container {
+        margin: 0 0.5rem 1rem;
+    }
+}

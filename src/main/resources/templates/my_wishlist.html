@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="https://www.thymeleaf.org"
+>
+<link rel="stylesheet" type="text/css" href="/css/my_wishlist.css">
+<head th:insert="~{fragments.html::header}">
+  <title>EunHop Movie App</title>
+</head>
+<body>
+<script src="/js/my_wishlist.js" defer></script>
+<header th:insert="~{fragments.html::nav}"></header>
+<div class="container">
+  <div class="wishlist_first">
+    <div class="wishlist_second">
+      <div class="media_wrapper">
+        <a th:if="${media == 'movie'}" class="selected" th:href="@{/my_wishlist/movie}">영화</a>
+        <a th:unless="${media == 'movie'}" class="not_selected" th:href="@{/my_wishlist/movie}">영화</a>
+        <a th:if="${media == 'tv'}" class="selected" th:href="@{/my_wishlist/tv}">TV 프로그램</a>
+        <a th:unless="${media == 'tv'}" class="not_selected" th:href="@{/my_wishlist/tv}">TV 프로그램</a>
+        <div class="sort_option_wrapper">
+          <label for="sort_option">
+            <select class="sort_option" id="sort_option" name="sort_option">
+              <option value="created_at">
+                추가한 순서로
+              </option>
+              <option value="release_date">
+                출시한 날짜 순서로
+              </option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="wishlist" id="wishList">
+        <div th:each="wish, wishStat : ${wishList}">
+          <div class="wish_start" th:if="${wish.video.media_type == media}">
+            <a class="wish_start_a"
+               th:href="@{/details/{media_type}/{id}(media_type=${wish.video.media_type},id=${wish.video.id})}">
+              <img th:if="${wish.video.poster_path.length()!=0}" class="wish_img"
+                   th:src="'https://image.tmdb.org/t/p/w342'+${wish.video.poster_path}" alt="poster">
+              <img th:unless="${wish.video.poster_path.length()!=0}" class="wish_img" src="/images/default-no-image.jpg"
+                   alt="poster">
+            </a>
+            <div class="wish_info">
+              <a th:href="@{/details/{media_type}/{id}(media_type=${wish.video.media_type},id=${wish.video.id})}">
+                <p class="wish_title" th:text="${wish.video.title}"></p>
+              </a>
+              <div class="wish_score_wrapper">
+                <span th:text="${wish.video.release_date}"></span>
+                <div class="my_score_wrapper">
+                  <img class="wish_tmdb_logo" src="/images/tmdb_logo.png" alt="tmdb_logo">
+                  <span class="wish_score" th:text="${wish.video.score}+'%'"></span>
+                </div>
+                <form th:id="'wish_form'+${wishStat.index}" onsubmit="return false">
+                  <input type="hidden" name="id" th:value="${wish.video.id}">
+                  <button th:id="${wishStat.index}" class="wish_submit" type="button" onclick="wish_submit(this.id)">
+                    <div th:if="${wish.isWish()}" class="wish_btn_wrapper">
+                      <span class="wish_icon">favorite</span>
+                      <span>관심</span>
+                    </div>
+                    <div th:unless="${wish.isWish()}" class="wish_btn_wrapper">
+                      <span class="wish_icon_none">favorite</span>
+                      <span>관심</span>
+                    </div>
+                  </button>
+                </form>
+              </div>
+              <p class="wish_tagline" th:text="${wish.video.tagline}"></p>
+              <p th:if="${wish.review != null}" class="my_review" th:text="'내 한줄평 : '+${wish.review}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wishlist" id="wishListOrderByDate" style="display: none">
+        <div class="wish_start_wrapper" th:each="wish : ${wishListOrderByDate}">
+          <div class="wish_start" th:if="${wish.video.media_type == media}">
+            <a class="wish_start_a"
+               th:href="@{/details/{media_type}/{id}(media_type=${wish.video.media_type},id=${wish.video.id})}">
+              <img th:if="${wish.video.poster_path.length()!=0}" class="wish_img"
+                   th:src="'https://image.tmdb.org/t/p/w342'+${wish.video.poster_path}" alt="poster">
+              <img th:unless="${wish.video.poster_path.length()!=0}" class="wish_img" src="/images/default-no-image.jpg"
+                   alt="poster">
+            </a>
+            <div class="wish_info">
+              <a th:href="@{/details/{media_type}/{id}(media_type=${wish.video.media_type},id=${wish.video.id})}">
+                <p class="wish_title" th:text="${wish.video.title}"></p>
+              </a>
+              <div class="wish_score_wrapper">
+                <span th:text="${wish.video.release_date}"></span>
+                <div class="my_score_wrapper">
+                <img class="wish_tmdb_logo" src="/images/tmdb_logo.png" alt="tmdb_logo">
+                <span class="wish_score" th:text="${wish.video.score}+'%'"></span>
+                </div>
+                <form th:id="'wish_form'+${wishStat.index}" onsubmit="return false">
+                  <input type="hidden" name="id" th:value="${wish.video.id}">
+                  <button th:id="${wishStat.index}" class="wish_submit" type="button" onclick="wish_submit(this.id)">
+                    <div th:if="${wish.isWish()}" class="wish_btn_wrapper">
+                      <span class="wish_icon">favorite</span>
+                      <span>관심</span>
+                    </div>
+                    <div th:unless="${wish.isWish()}" class="wish_btn_wrapper">
+                      <span class="wish_icon_none">favorite</span>
+                      <span>관심</span>
+                    </div>
+                  </button>
+                </form>
+              </div>
+              <p class="wish_tagline" th:text="${wish.video.tagline}"></p>
+              <p th:if="${wish.review != null}" class="my_review" th:text="'내 한줄평 : '+${wish.review}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer th:insert="~{fragments.html::footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,516 @@
+.container {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+.details {
+    background-size: cover;
+    background-position: left 5rem top;
+    width: 100%;
+    background-repeat: no-repeat;
+}
+
+.details_wrapper {
+    background-image: linear-gradient(to right, rgba(30, 30, 30, 1) 5rem, rgba(30, 30, 30, 0.7) 30%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content_wrapper {
+    width: 81rem;
+    padding: 2rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.poster_img {
+}
+
+.poster_wrapper {
+    width: 18rem;
+    height: 100%;
+}
+
+.poster_wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+}
+
+.description_wrapper {
+    padding-left: 1rem;
+    color: white;
+    flex-grow: 1;
+}
+
+.title_wrapper {
+    word-break: keep-all;
+}
+
+.detail_title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.year {
+    font-weight: 300;
+    font-size: 1.5rem;
+    color: lightgray;
+}
+
+.score_and_date {
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.tmdb_logo {
+    background-image: url("../images/tmdb_logo.png");
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    width: 9rem;
+    height: 1.5rem;
+}
+
+.score_wrapper {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #33B8D7;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.score {
+    margin-left: 0.5rem;
+}
+
+.wish_submit {
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    margin: 0 0.5rem;
+    padding: 0;
+    position: relative;
+}
+.wish_submit_text {
+    visibility: hidden;
+    background-color: white;
+    text-align: center;
+    border-radius: 0.5rem;
+    position: absolute;
+    z-index: 1;
+}
+
+.wish_submit:hover .wish_submit_text {
+    visibility: visible;
+}
+
+.wish_submit_text::after {
+    content: "";
+    position: absolute;
+    border-style: solid;
+    border-width: 0.5rem;
+}
+
+.bottom {
+    width: 10rem;
+    top: 100%;
+    left: 50%;
+    margin-left: -5.5rem;
+    word-break: keep-all;
+    padding: 0.2rem 0.1rem;
+}
+
+.bottom::after {
+    bottom: 100%;
+    left: 50%;
+    border-color: transparent transparent white transparent;
+}
+
+.wish_icon {
+    font-family: 'Material Symbols Rounded';
+    color: #ffffff;
+    font-size: 3rem;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 48;
+}
+
+.wish_icon_true {
+    font-family: 'Material Symbols Rounded';
+    color: #ffffff;
+    font-size: 3rem;
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+}
+
+.date_and_genres {
+    font-weight: 300;
+    margin-top: 0.5rem;
+    display: flex;
+}
+
+.date {
+    white-space: nowrap;
+}
+
+.genre_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.genre {
+    margin-left: 0.5rem;
+}
+
+.tagline {
+    font-weight: 700;
+    margin-top: 0.5rem;
+    color: lightgray;
+    font-size: 1.2rem;
+    word-break: keep-all;
+}
+
+.overview {
+    font-weight: 300;
+    word-break: keep-all;
+    white-space: pre-line;
+}
+
+.overview_title {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.persons_container {
+    width: 100%;
+}
+
+.persons_first {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.persons_second {
+    width: calc(100% - 4rem);
+    max-width: 81rem;
+    margin: 0 2rem 1rem 2rem;
+}
+.persons_third {
+    width: 100%;
+}
+.persons_title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+}
+
+.persons_wrapper {
+    display: flex;
+    overflow: auto;
+}
+
+.person {
+    width: 9rem;
+    margin: 0.5rem;
+    border: 0.1rem solid lightgray;
+    border-radius: 1rem;
+}
+
+.person img {
+    background-image: url("../images/default-no-image.jpg");
+    width: 9rem;
+    border-bottom: 0.1rem solid lightgray;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.person_info {
+    margin: 0.5rem;
+}
+
+.person_sub {
+    margin-top: 0.2rem;
+    font-weight: 300;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.review_title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0.5rem;
+}
+
+.review_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.review_wrapper {
+    width: calc(100% - 4rem);
+    max-width: 81rem;
+    margin: 0 2rem 1rem 2rem;
+    background-color: #E9ECEF;
+    border-radius: 0.5rem;
+}
+
+.review_btn {
+    width: 6rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border-style: none;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    background-color: #bfbfbf;
+}
+
+.create_review_wrapper {
+    display: flex;
+    margin: 0.5rem 1%;
+    width: 98%;
+}
+
+.create_review {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+
+.create_review label {
+    display: contents;
+}
+
+.create_review_left {
+    display: flex;
+    width: 6.5rem;
+}
+
+.create_input {
+    flex-grow: 1;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border-style: none;
+    padding-left: 0.5rem;
+}
+
+.my_review_wrapper {
+    position: relative;
+}
+
+.update_left {
+    margin-left: auto;
+}
+
+.my_review {
+    width: 100%;
+    display: flex;
+}
+
+.update_form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    align-items: center;
+    width: 100%;
+    margin: 0.5rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+}
+
+.update_form label {
+    display: contents;
+}
+
+.update_text {
+    flex-grow: 1;
+    border-radius: 0.5rem;
+    border-style: none;
+    padding-left: 0.5rem;
+    height: 2.5rem;
+    margin-right: 0.5rem;
+    font-weight: 500;
+}
+
+.my_review_span {
+    margin: 0.5rem;
+    display: flex;
+    align-items: center;
+    height: 2.5rem;
+}
+
+.my_review_info {
+    height: 2.5rem;
+    font-weight: 300;
+    text-align: end;
+    margin-right: 0.5rem;
+}
+
+.move_update_btn {
+    position: absolute;
+    top: 0;
+    right: 0.5rem;
+}
+
+.reviews_wrapper {
+    max-height: 24rem;
+    overflow: auto;
+}
+
+.reviews {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    padding: 0.3rem 0;
+}
+
+.review_text {
+    flex-grow: 1;
+    margin-left: 0.5rem;
+}
+
+.reviews_null {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem;
+    height: 4rem;
+}
+
+.review_end {
+    height: 1rem;
+}
+
+@media (max-width: 650px) {
+    .details {
+        height: auto;
+        background-position: left 2rem top;
+        background-size: 100% 12rem;
+    }
+
+    .details_wrapper {
+        background-image: none;
+    }
+
+    .content_wrapper {
+        width: 100%;
+        padding: 0;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 1) 2rem, rgba(0, 0, 0, 0.5) 30%);
+        flex-wrap: wrap;
+        justify-content: normal;
+    }
+
+    .poster_wrapper {
+        display: flex;
+        align-items: center;
+        margin-left: 1rem;
+        width: 7rem;
+        height: auto;
+    }
+
+    .description_wrapper {
+        width: 100%;
+        margin: 0;
+        padding: 1rem;
+        color: #000;
+        background-color: #E9ECEF;
+        text-align: center;
+    }
+
+    .title_wrapper {
+        justify-content: center;
+    }
+
+    .detail_title {
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+
+    .year {
+        font-size: 1.2rem;
+        color: dimgray;
+    }
+
+    .score_wrapper {
+        justify-content: center;
+    }
+
+    .wish_icon {
+        color: #000000;
+    }
+
+    .wish_icon_true {
+        color: #000000;
+    }
+
+    .date_and_genres {
+        margin-top: 0.5rem;
+        display: block;
+    }
+
+    .genre_wrapper {
+        justify-content: center;
+    }
+
+    .genre {
+        margin: 0 0.2rem;
+    }
+
+    .tagline {
+        margin-top: 0.5rem;
+        color: dimgray;
+        font-size: 1.2rem;
+    }
+
+    .overview_title {
+        font-size: 1.2rem;
+    }
+    .persons_second {
+        width: calc(100% - 1rem);
+        margin: 0 0.5rem 1rem 0.5rem;
+    }
+
+    .person {
+        width: 6rem;
+        margin: 0.2rem;
+    }
+
+    .person img {
+        width: 6rem;
+    }
+
+    .review_wrapper {
+        width: 100%;
+        margin: 0.5rem;
+    }
+
+    .create_review_left {
+        width: 100%;
+    }
+
+    .create_input {
+        width: calc(100% - 1rem);
+    }
+
+    .review_btn {
+        margin: 0.5rem 0 0 0;
+        width: 9rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+    }
+}

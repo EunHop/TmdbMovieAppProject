@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="/css/notice_add.css">
+<head th:insert="~{fragments.html::header}">
+  <title>EunHop Movie App</title>
+</head>
+<body>
+<script src="/js/notice_add.js" defer></script>
+<header th:insert="~{fragments.html::nav}"></header>
+<div class="container">
+  <div class="notice_add_container">
+    <h1 class="h1">공지사항 추가</h1>
+    <form id="notice_add" onsubmit="return false">
+      <div class="notice_username_wrapper">
+        <span class="notice_username">작성자</span>
+        <span class="notice_add_username" th:text="${user.name}"></span>
+      </div>
+      <div class="notice_title_wrapper">
+        <span class="notice_title">제목</span>
+        <input class="notice_add_title" name="title" type="text" placeholder="제목을 입력해주세요.">
+      </div>
+      <div class="notice_content_wrapper">
+        <span class="notice_content_text">내용</span>
+        <textarea class="notice_add_content" name="content" placeholder="내용을 입력해주세요."></textarea>
+      </div>
+      <button class="notice_add_button" onclick="notice_add_function()">작성</button>
+    </form>
+  </div>
+</div>
+<footer th:insert="~{fragments.html::footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<link rel="stylesheet" type="text/css" href="/css/notice.css">
+<head th:insert="~{fragments.html::header}">
+  <title>EunHop Movie App</title>
+</head>
+<body>
+<script src="/js/notice.js" defer></script>
+<header th:insert="~{fragments.html::nav}"></header>
+<div class="container">
+  <div class="notice_container">
+    <div class="notice_enabled_wrapper" sec:authorize="hasRole('ADMIN')">
+      <th:block th:if="${enabled}">
+        <a class="notice_enabled active" th:href="@{/notice(pageNo=0)}">Enabled</a>
+        <a class="notice_disabled" th:href="@{/notice/disabled(pageNo=0)}">Disabled</a>
+      </th:block>
+      <th:block th:unless="${enabled}">
+        <a class="notice_enabled" th:href="@{/notice(pageNo=0)}">Enabled</a>
+        <a class="notice_disabled active" th:href="@{/notice/disabled(pageNo=0)}">Disabled</a>
+      </th:block>
+    </div>
+    <div class="notice_title_wrapper">
+      <h1 class="h1">공지사항</h1>
+      <div class="search">
+        <form method="get" th:action="@{/notice/search}">
+          <label>
+            <input type="hidden" name="pageNo" value="0">
+            <input type="hidden" name="enabled" th:value="${enabled}">
+            <input type="text" name="query" placeholder="공지사항을 검색해보세요." th:value="${param.query}">
+            <button type="submit">Search</button>
+          </label>
+        </form>
+      </div>
+    </div>
+    <th:block th:each="notice : ${noticeList}">
+      <ul class="entity_ul">
+        <li class="notice_number">
+          <span th:text="${notice.id}"></span>
+        </li>
+        <li class="notice_title">
+          <span th:text="${notice.title}"></span>
+        </li>
+        <li class="notice_date">
+          <span th:text="${notice.modifiedAt.getYear()}"></span>
+          <span th:if="${notice.modifiedAt.getMonthValue()>=10}"
+                th:text="${'.'+notice.modifiedAt.getMonthValue()}"></span>
+          <span th:unless="${notice.modifiedAt.getMonthValue()>=10}"
+                th:text="${'.0'+notice.modifiedAt.getMonthValue()}"></span>
+          <span th:if="${notice.modifiedAt.getDayOfMonth()>=10}"
+                th:text="${'.'+notice.modifiedAt.getDayOfMonth()}"></span>
+          <span th:unless="${notice.modifiedAt.getDayOfMonth()>=10}"
+                th:text="${'.0'+notice.modifiedAt.getDayOfMonth()}"></span>
+          <br>
+          <span th:if="${notice.modifiedAt.getHour()>=10}" th:text="${notice.modifiedAt.getHour()+':'}"></span>
+          <span th:unless="${notice.modifiedAt.getHour()>=10}" th:text="${'0'+notice.modifiedAt.getHour()+':'}"></span>
+          <span th:if="${notice.modifiedAt.getMinute()>=10}" th:text="${notice.modifiedAt.getMinute()}"></span>
+          <span th:unless="${notice.modifiedAt.getMinute()>=10}" th:text="${'0'+notice.modifiedAt.getMinute()}"></span>
+        </li>
+        <li class="see_more">
+          <span class="see-icon">add</span>
+        </li>
+      </ul>
+      <div class="notice_content">
+        <form th:id="'notice_form'+${notice.id}" onsubmit="return false">
+          <div class="notice_date_mobile">
+            <span th:text="${notice.modifiedAt.getYear()}"></span>
+            <span th:if="${notice.modifiedAt.getMonthValue()>=10}"
+                  th:text="${'.'+notice.modifiedAt.getMonthValue()}"></span>
+            <span th:unless="${notice.modifiedAt.getMonthValue()>=10}"
+                  th:text="${'.0'+notice.modifiedAt.getMonthValue()}"></span>
+            <span th:if="${notice.modifiedAt.getDayOfMonth()>=10}"
+                  th:text="${'.'+notice.modifiedAt.getDayOfMonth()}"></span>
+            <span th:unless="${notice.modifiedAt.getDayOfMonth()>=10}"
+                  th:text="${'.0'+notice.modifiedAt.getDayOfMonth()}"></span>
+            <br>
+            <span th:if="${notice.modifiedAt.getHour()>=10}" th:text="${notice.modifiedAt.getHour()+':'}"></span>
+            <span th:unless="${notice.modifiedAt.getHour()>=10}" th:text="${'0'+notice.modifiedAt.getHour()+':'}"></span>
+            <span th:if="${notice.modifiedAt.getMinute()>=10}" th:text="${notice.modifiedAt.getMinute()}"></span>
+            <span th:unless="${notice.modifiedAt.getMinute()>=10}" th:text="${'0'+notice.modifiedAt.getMinute()}"></span>
+          </div>
+          <div class="notice_content_text_wrapper">
+            <p class="notice_content_text" th:utext="${notice.content}"></p>
+          </div>
+          <div class="notice_button_wrapper">
+            <button th:if="${notice.enabled == true}" class="notice_delete" sec:authorize="hasRole('ADMIN')" th:onclick="'notice_delete_function('+${notice.id}+')'">삭제</button>
+            <button th:unless="${notice.enabled == true}" class="notice_delete" sec:authorize="hasRole('ADMIN')" th:onclick="'notice_restore_function('+${notice.id}+')'">복원</button>
+            <div class="modify_button_wrapper">
+              <button class="notice_content_modify" sec:authorize="hasRole('ADMIN')">수정</button>
+              <button class="notice_content_modify_cancel" style="display: none" sec:authorize="hasRole('ADMIN')">취소</button>
+              <button class="notice_content_modify_confirm" style="display: none" sec:authorize="hasRole('ADMIN')" th:onclick="'notice_modify('+${notice.id}+')'">확인</button>
+            </div>
+          </div>
+          <input type="hidden" name="id" th:value="${notice.id}">
+        </form>
+      </div>
+    </th:block>
+    <div class="notice_page">
+      <a class="a_margin" th:if="${noticeList.getNumber()>=10}"
+         th:href="@{/notice(pageNo=${(noticeList.getNumber/10)*10 -1})}">
+        <span class="page-icon">arrow_back</span>이전
+      </a>
+      <!--      1 ~ 마지막 페이지 번호의 10의 자리까지 -->
+      <th:block th:if="${noticeList.getTotalPages()>=10}"
+                th:each="tenPages : ${#numbers.sequence(1,noticeList.getTotalPages()/10)}">
+        <div th:if="${noticeList.getNumber()/10+1==tenPagesStat.current}">
+          <!--          이전 번호들 - 현재 번호 - 다음 번호들 로 구성 되어 있음. -->
+          <th:block th:if="${noticeList.getNumber()>=tenPagesStat.count*10 -9 }"
+                    th:each="leftNum : ${#numbers.sequence(tenPagesStat.count*10 -9,noticeList.getNumber())}">
+            <a class="a_margin" th:href="@{/notice(pageNo=${leftNum - 1})}"><span th:text="${leftNum}"></span></a>
+          </th:block>
+          <a class="a_margin" th:if="${noticeList.getNumber()!=noticeList.getTotalPages()}"
+             th:href="@{/notice(pageNo=${noticeList.getNumber()})}"><span class="present_page"
+                                                                          th:text="${noticeList.getNumber() + 1}"></span></a>
+          <th:block th:if="${noticeList.getNumber()+2<=tenPagesStat.count*10}"
+                    th:each="rightNum : ${#numbers.sequence(noticeList.getNumber()+2,tenPagesStat.count*10)}">
+            <a class="a_margin" th:href="@{/notice(pageNo=${rightNum - 1})}"><span th:text="${rightNum}"></span></a>
+          </th:block>
+        </div>
+      </th:block>
+      <!--      마지막 페이지 번호의 10의 자리 ~ 마지막 페이지까지 -->
+      <div th:if="${noticeList.getNumber()/10==noticeList.getTotalPages()/10}">
+        <!--          이전 번호들 - 현재 번호 - 다음 번호들 로 구성 되어 있음. -->
+        <th:block th:if="${(noticeList.getTotalPages()/10)*10+1<=noticeList.getNumber()}"
+                  th:each="lastLeftNum : ${#numbers.sequence((noticeList.getTotalPages()/10)*10+1,noticeList.getNumber())}">
+          <a class="a_margin" th:href="@{/notice(pageNo=${lastLeftNum - 1})}"><span th:text="${lastLeftNum}"></span></a>
+        </th:block>
+        <a class="a_margin" th:if="${noticeList.getNumber()!=noticeList.getTotalPages()}"
+           th:href="@{/notice(pageNo=${noticeList.getNumber()})}"><span class="present_page"
+                                                                        th:text="${noticeList.getNumber() + 1}"></span></a>
+        <th:block th:if="${noticeList.getNumber()+2<=noticeList.getTotalPages()}"
+                  th:each="lastRightNum : ${#numbers.sequence(noticeList.getNumber()+2,noticeList.getTotalPages())}">
+          <a class="a_margin" th:href="@{/notice(pageNo=${lastRightNum - 1})}"><span
+              th:text="${lastRightNum}"></span></a>
+        </th:block>
+      </div>
+      <a th:if="${noticeList.getTotalPages()>10 && (noticeList.getNumber())/10 != (noticeList.getTotalPages()+1)/10}"
+         class="a_margin"
+         th:href="@{/notice(pageNo=${(noticeList.getNumber/10)*10+10})}">
+        다음<span class="page-icon">arrow_forward</span>
+      </a>
+    </div>
+    <a th:if="${enabled}" class="notice_add" sec:authorize="hasRole('ADMIN')" th:href="@{/notice/add}">추가</a>
+  </div>
+</div>
+<footer th:insert="~{fragments.html::footer}"></footer>
+</body>
+</html>

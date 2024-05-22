@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+>
+<link rel="stylesheet" type="text/css" href="/css/details.css">
+<head th:insert="~{fragments.html::header}">
+  <title>EunHop Movie App</title>
+</head>
+<body>
+<script src="/js/details.js" defer></script>
+<header th:insert="~{fragments.html::nav}"></header>
+<div class="container">
+  <div class="details"
+       th:style="'background-image: url(https://image.tmdb.org/t/p/w1280'+${descriptionKR.backdrop_path}+')'">
+    <div class="details_wrapper">
+      <div class="content_wrapper">
+        <div class="poster_img">
+          <div class="poster_wrapper">
+            <img th:if="${descriptionKR.poster_path!=null}"
+                 th:src="'https://image.tmdb.org/t/p/w342'+${descriptionKR.poster_path}" alt="poster">
+            <img th:unless="${descriptionKR.poster_path!=null}" src="/images/default-no-image.jpg" alt="poster">
+          </div>
+        </div>
+        <div class="description_wrapper">
+          <div class="title_wrapper">
+            <span th:if="${descriptionKR.title!=null}" class="detail_title" th:text="${descriptionKR.title}"></span>
+            <span th:unless="${descriptionKR.title!=null}" class="detail_title" th:text="${descriptionKR.name}"></span>
+            <th:block th:if="${descriptionKR.release_date!=null}">
+              <span th:if="${descriptionKR.release_date.length()!=0}" class="year"
+                    th:text="${'('+descriptionKR.release_date.substring(0,4)+')'}"></span>
+            </th:block>
+            <th:block th:if="${descriptionKR.first_air_date!=null}">
+              <span th:if="${descriptionKR.first_air_date.length()!=0}" class="year"
+                    th:text="${'('+descriptionKR.first_air_date.substring(0,4)+')'}"></span>
+            </th:block>
+          </div>
+          <div class="score_and_date">
+            <div class="date_and_genres">
+              <span class="date" th:if="${descriptionKR.release_date!=null}"
+                    th:text="${descriptionKR.release_date}"></span>
+              <span class="date" th:unless="${descriptionKR.release_date!=null}"
+                    th:text="${descriptionKR.first_air_date}"></span>
+              <div class="genre_wrapper">
+                <div class="genre" th:each="genre : ${descriptionKR.genres}">
+                  <span th:text="${genre.name}"></span>
+                </div>
+              </div>
+            </div>
+            <div class="score_wrapper">
+              <div class="tmdb_logo"></div>
+              <span class="score" th:text="${descriptionKR.score+'%'}"></span>
+              <form id="wish_form" sec:authorize="isAuthenticated()" onsubmit="return false">
+                <input type="hidden" id="id" name="id" th:value="${descriptionKR.id}">
+                <input type="hidden" name="title"
+                       th:value="${descriptionKR.title!=null} ? ${descriptionKR.title} : ${descriptionKR.name}">
+                <input type="hidden" name="tagline"
+                       th:value="${descriptionKR.tagline.length()!=0} ? ${descriptionKR.tagline} : ${descriptionEN.tagline}">
+                <input type="hidden" name="poster_path" th:value="${descriptionKR.poster_path}">
+                <input type="hidden" id="media" name="media_type" th:value="${media}">
+                <input type="hidden" name="release_date"
+                       th:value="${descriptionKR.release_date!=null} ? ${descriptionKR.release_date} : ${descriptionKR.first_air_date}">
+                <input type="hidden" name="score" th:value="${descriptionKR.score}">
+                <input type="hidden" name="wish_or_review" th:value="${true}">
+                <div th:if="${myReview!=null}">
+                  <button th:if="${myReview.wish==true}" class="wish_submit" type="button" onclick="wish()">
+                    <span class="wish_icon_true">favorite</span>
+                    <span class="wish_submit_text bottom">즐겨찾기에 제거 해보세요.</span>
+                  </button>
+                  <button th:unless="${myReview.wish==true}" class="wish_submit" type="button" onclick="wish()">
+                    <span class="wish_icon">favorite</span>
+                    <span class="wish_submit_text bottom">즐겨찾기에 추가 해보세요.</span>
+                  </button>
+                </div>
+                <button th:if="${myReview==null}" class="wish_submit" type="button" onclick="wish()">
+                  <span class="wish_icon">favorite</span>
+                  <span class="wish_submit_text bottom">즐겨찾기에 추가 해보세요.</span>
+                </button>
+              </form>
+              <button sec:authorize="!isAuthenticated()" class="wish_submit" type="button">
+                <span class="wish_submit_text bottom">즐겨찾기에 추가하려면 로그인해주세요.</span>
+                <span class="wish_icon">favorite</span>
+              </button>
+            </div>
+          </div>
+          <div class="tagline">
+            <span th:if="${descriptionKR.tagline.length()!=0}" th:text="${descriptionKR.tagline}"></span>
+            <span th:unless="${descriptionKR.tagline.length()!=0}" th:text="${descriptionEN.tagline}"></span>
+          </div>
+          <div class="overview">
+            <p class="overview_title">개요</p>
+            <span th:if="${descriptionKR.overview.length()!=0}" th:text="${descriptionKR.overview}"></span>
+            <span th:unless="${descriptionKR.overview.length()!=0}" th:text="${descriptionEN.overview}"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="persons_container">
+    <div class="persons_first">
+      <div class="persons_second">
+        <p th:if="${media=='movie'}" class="persons_title">주요 제작진</p>
+        <p th:if="${media=='tv' && emptyCheck }" class="persons_title">주요 제작진</p>
+        <div class="persons_wrapper">
+          <div th:if="${media == 'movie'}" class="person" th:each="person : ${producers}">
+            <img th:if="${person.profile_path!=null}" th:src="'https://image.tmdb.org/t/p/w185'+${person.profile_path}"
+                 alt="noImg">
+            <img th:unless="${person.profile_path!=null}" src="/images/default-no-image.jpg" alt="noImg">
+            <div class="person_info">
+              <p class="person_name" th:text="${person.name}"></p>
+              <p class="person_sub" th:text="${person.job}"></p>
+            </div>
+          </div>
+          <div th:unless="${media == 'movie'}" class="person" th:each="person : ${descriptionKR.created_by}">
+            <img th:if="${person.profile_path!=null}" th:src="'https://image.tmdb.org/t/p/w185'+${person.profile_path}"
+                 alt="noImg">
+            <img th:unless="${person.profile_path!=null}" src="/images/default-no-image.jpg" alt="noImg">
+            <div class="person_info">
+              <p class="person_name" th:text="${person.name}"></p>
+              <p class="person_sub">Creator</p>
+            </div>
+          </div>
+        </div>
+        <p class="persons_title">주요 출연진</p>
+        <div class="persons_wrapper">
+          <div class="person" th:each="person : ${actors}">
+            <img th:if="${person.profile_path!=null}" th:src="'https://image.tmdb.org/t/p/w185'+${person.profile_path}"
+                 alt="noImg">
+            <img th:unless="${person.profile_path!=null}" src="/images/default-no-image.jpg" alt="noImg">
+            <div class="person_info">
+              <p class="person_name" th:text="${person.name}"></p>
+              <p class="person_sub" th:text="${person.character}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="review_container">
+    <div class="review_wrapper">
+      <p class="review_title">한줄평</p>
+      <div th:if="${myReview==null || myReview.review==null}" class="create_review_wrapper" sec:authorize="hasRole('USER') || hasRole('ADMIN')">
+        <form id="review_form" class="create_review" onsubmit="return false">
+          <label>
+            <input type="text" class="create_input" name="review" id="review_form_text"
+                   th:placeholder="${descriptionKR.title!=null} ? ${descriptionKR.title}+'에 대해 한줄평이 남겨보세요.' : ${descriptionKR.name}+'에 대해 한줄평이 남겨보세요.'"
+            >
+            <input type="hidden" name="id" th:value="${descriptionKR.id}">
+            <input type="hidden" name="title"
+                   th:value="${descriptionKR.title!=null} ? ${descriptionKR.title} : ${descriptionKR.name}">
+            <input type="hidden" name="tagline"
+                   th:value="${descriptionKR.tagline.length()!=0} ? ${descriptionKR.tagline} : ${descriptionEN.tagline}">
+            <input type="hidden" name="poster_path" th:value="${descriptionKR.poster_path}">
+            <input type="hidden" name="media_type" th:value="${media}">
+            <input type="hidden" name="release_date"
+                   th:value="${descriptionKR.release_date!=null} ? ${descriptionKR.release_date} : ${descriptionKR.first_air_date}">
+            <input type="hidden" name="score" th:value="${descriptionKR.score}">
+            <input type="hidden" name="wish_or_review" th:value="${false}">
+          </label>
+          <div class="create_review_left">
+            <button class="review_btn" type="button" id="review_btn">확인</button>
+          </div>
+        </form>
+      </div>
+      <div th:if="${myReview!=null && myReview.review!=null}" class="my_review_wrapper" sec:authorize="hasRole('USER') || hasRole('ADMIN')">
+        <div class="my_review_span">
+          <span>내 작성글</span>
+          <div class="update_left">
+            <button class="review_btn" id="update_review_btn" type="button">수정</button>
+            <button class="review_btn" id="update_btn" type="button" style="display: none">확인</button>
+            <button class="review_btn" id="delete_btn" type="button">삭제</button>
+          </div>
+        </div>
+        <div class="my_review">
+          <form id="review_update_form" class="update_form" onsubmit="return false">
+            <label>
+              <input type="hidden" name="id" th:value="${descriptionKR.id}">
+              <input type="text" name="review" class="update_text" id="update_enabled" th:value="${myReview.review}"
+                     disabled>
+              <input type="hidden" name="wish_or_review" th:value="${false}">
+              <div class="my_review_info">
+                <p th:text="${myReview.modifiedAt.getYear()}+'년'+${myReview.modifiedAt.getMonthValue()}+'월'+${myReview.modifiedAt.getDayOfMonth()}+'일'"></p>
+                <p th:text="${myReview.modifiedAt.getHour()}+'시'+${myReview.modifiedAt.getMinute()}+'분'"></p>
+              </div>
+            </label>
+          </form>
+        </div>
+      </div>
+      <div th:if="${reviews.size()!=0}" class="reviews_wrapper">
+        <div class="reviews" th:each="review_list : ${reviews}">
+          <span class="review_text" th:text="${review_list.review}"></span>
+          <div class="my_review_info">
+            <p th:text="${review_list.modifiedAt.getYear()}+'년'+${review_list.modifiedAt.getMonthValue()}+'월'+${review_list.modifiedAt.getDayOfMonth()}+'일'"></p>
+            <p th:text="${review_list.modifiedAt.getHour()}+'시'+${review_list.modifiedAt.getMinute()}+'분, 작성자 :'+${review_list.user.name}"></p>
+          </div>
+        </div>
+      </div>
+      <div th:if="${reviews.size()==0 && myReview?.review==null}" sec:authorize="hasRole('USER') || hasRole('ADMIN')" class="reviews_null_wrapper">
+        <div class="reviews_null">
+          <p>현재 한줄 평이 없습니다. 한줄 평을 남겨보세요.</p>
+        </div>
+      </div>
+      <div th:if="${reviews.size()==0}" sec:authorize="!isAuthenticated()" class="reviews_wrapper">
+        <div class="reviews_null">
+          <p>현재 한줄 평이 없습니다. 로그인해서 한줄 평을 남겨보세요.</p>
+        </div>
+      </div>
+      <div class="review_end"></div>
+    </div>
+  </div>
+</div>
+<footer th:insert="~{fragments.html::footer}"></footer>
+</body>
+</html>

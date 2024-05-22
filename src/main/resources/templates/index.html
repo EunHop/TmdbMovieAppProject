@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="/css/body.css">
+<head th:insert="~{fragments.html::header}">
+  <title>EunHop Movie App</title>
+</head>
+<body>
+<header th:insert="~{fragments.html::nav}"></header>
+<div class="container">
+  <div class="search_wrapper"
+       th:style="'background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url(https://image.tmdb.org/t/p/w1280'+${mainList.results.get(randomNum).backdrop_path}+')'">
+    <div class="search_title">
+      <h2>Welcome.</h2>
+      <h3>Search movies, TV shows whatever you are looking for</h3>
+    </div>
+    <div class="search">
+      <form method="get" th:action="@{/search/movie}">
+        <label>
+          <input type="text" name="query" placeholder="영화, TV 프로그램을 검색해보세요.">
+          <input type="hidden" name="page" value="1">
+          <button type="submit">Search</button>
+        </label>
+      </form>
+    </div>
+  </div>
+  <div class="movies">
+    <div class="column">
+      <div class="media_wrapper">
+        <h2 th:if="${param.query==null}">최근 인기</h2>
+      </div>
+    </div>
+    <div class="movies_wrapper">
+      <div th:each="movie : ${mainList.results}">
+        <a th:if="${movie.poster_path!=null}"
+           th:href="@{/details/{media_type}/{id}(media_type=${movie.media_type},id=${movie.id})}"
+           class="movie"
+           th:style="'background-image: url(https://image.tmdb.org/t/p/w342'+${movie.poster_path}+')'">
+          <div class="info">
+            <div class="info_date" th:if="${movie.release_date!=null}" th:text="${movie.release_date}"></div>
+            <div class="info_date" th:unless="${movie.release_date!=null}" th:text="${movie.first_air_date}"></div>
+            <div class="info_title" th:if="${movie.title!=null}" th:text="${movie.title}"></div>
+            <div class="info_title" th:unless="${movie.title!=null}" th:text="${movie.name}"></div>
+          </div>
+        </a>
+        <a th:unless="${movie.poster_path!=null}"
+           th:href="@{/details/{media_type}/{id}(media_type=${movie.media_type},id=${movie.id})}" class="movie">
+          <div class="info">
+            <div class="info_date" th:if="${movie.release_date!=null}" th:text="${movie.release_date}"></div>
+            <div class="info_date" th:unless="${movie.release_date!=null}" th:text="${movie.first_air_date}"></div>
+            <div class="info_title" th:if="${movie.title!=null}" th:text="${movie.title}"></div>
+            <div class="info_title" th:unless="${movie.title!=null}" th:text="${movie.name}"></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<footer th:insert="~{fragments.html::footer}"></footer>
+</body>
+</html>

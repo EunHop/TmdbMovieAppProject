@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="/css/body.css">
+<head th:insert="~{fragments.html::header}">
+  <title>EunHop Movie App</title>
+</head>
+<body>
+<header th:insert="~{fragments.html::nav}"></header>
+<div class="container">
+  <div class="search_wrapper"
+       th:style="'background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url(https://image.tmdb.org/t/p/w1280'+${backdrop.results.get(randomNum).backdrop_path}+')'">
+    <div class="search_title">
+      <h2>Welcome.</h2>
+      <h3>Search movies, TV shows whatever you are looking for</h3>
+    </div>
+    <div class="search">
+      <form method="get" th:action="@{/search/movie}">
+        <label>
+          <input type="text" name="query" placeholder="영화, TV 프로그램을 검색해보세요." th:value="${param.query}">
+          <input type="hidden" name="page" value="1">
+          <button type="submit">Search</button>
+        </label>
+      </form>
+    </div>
+  </div>
+  <div class="movies">
+    <div class="column">
+      <div class="media_wrapper">
+        <a th:if="${media == 'movie'}" class="selected"
+           th:href="@{/search/movie(query=${param.query},page=${1})}">영화</a>
+        <a th:unless="${media == 'movie'}" th:href="@{/search/movie(query=${param.query},page=${1})}">영화</a>
+        <a th:if="${media == 'tv'}" class="selected"
+           th:href="@{/search/tv(query=${param.query},page=${1})}">TV 프로그램</a>
+        <a th:unless="${media == 'tv'}" th:href="@{/search/tv(query=${param.query},page=${1})}">TV 프로그램</a>
+        <span class="media_size" th:text="${searchList.total_results}+'개'"></span>
+      </div>
+    </div>
+    <div class="movies_wrapper">
+      <div th:each="movie : ${searchList.results}">
+        <a th:if="${movie.poster_path!=null}"
+           th:href="@{/details/{media_type}/{id}(media_type=${movie.media_type},id=${movie.id})}"
+           class="movie"
+           th:style="'background-image: url(https://image.tmdb.org/t/p/w342'+${movie.poster_path}+')'">
+          <div class="info">
+            <div class="info_date" th:if="${movie.release_date!=null}" th:text="${movie.release_date}"></div>
+            <div class="info_date" th:unless="${movie.release_date!=null}" th:text="${movie.first_air_date}"></div>
+            <div class="info_title" th:if="${movie.title!=null}" th:text="${movie.title}"></div>
+            <div class="info_title" th:unless="${movie.title!=null}" th:text="${movie.name}"></div>
+          </div>
+        </a>
+        <a th:unless="${movie.poster_path!=null}"
+           th:href="@{/details/{media_type}/{id}(media_type=${movie.media_type},id=${movie.id})}" class="movie">
+          <div class="info">
+            <div class="info_date" th:if="${movie.release_date!=null}" th:text="${movie.release_date}"></div>
+            <div class="info_date" th:unless="${movie.release_date!=null}" th:text="${movie.first_air_date}"></div>
+            <div class="info_title" th:if="${movie.title!=null}" th:text="${movie.title}"></div>
+            <div class="info_title" th:unless="${movie.title!=null}" th:text="${movie.name}"></div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div th:if="${param.query !=null}" class="page-wrapper">
+      <a class="previous" th:if="${(searchList.page - 1)/10 >= 1}"
+         th:href="@{/search/{media}(media=${media},query=${param.query},page=${((searchList.page - 1)/10)*10})}">
+        <span class="page-icon">arrow_back</span>이전
+      </a>
+<!--      1 ~ 마지막 페이지 번호의 10의 자리까지-->
+      <div th:if="${searchList.total_pages>=10}" th:each="number : ${#numbers.sequence(1,(searchList.total_pages/10))}">
+        <div class="num-wrapper" th:if="${number == ((searchList.page - 1)/10)+1}">
+          <div class="num" th:each="num : ${#numbers.sequence(1+((number - 1) * 10),number * 10)}">
+            <a th:if="${searchList.page == num}" class="current"
+               th:href="@{/search/{media}(media=${media},query=${param.query},page=${num})}" th:text="${num}"></a>
+            <a th:unless="${searchList.page == num}"
+               th:href="@{/search/{media}(media=${media},query=${param.query},page=${num})}" th:text="${num}"></a>
+          </div>
+        </div>
+      </div>
+<!--      마지막 페이지 번호의 10의 자리 ~ 마지막 페이지까지-->
+      <div class="num-wrapper" th:if="${searchList.page/10 == searchList.total_pages/10 && searchList.page%10 > 0}">
+        <div class="num" th:each="num : ${#numbers.sequence(1+((searchList.total_pages/10) * 10),searchList.total_pages)}">
+          <a th:if="${searchList.page == num}" class="current"
+             th:href="@{/search/{media}(media=${media},query=${param.query},page=${num})}" th:text="${num}"></a>
+          <a th:unless="${searchList.page == num}"
+             th:href="@{/search/{media}(media=${media},query=${param.query},page=${num})}" th:text="${num}"></a>
+        </div>
+      </div>
+      <a th:if="${searchList.total_pages>10 && (searchList.page - 1)/10 != searchList.total_pages/10}" class="next"
+         th:href="@{/search/{media}(media=${media},query=${param.query},page=${((searchList.page - 1)/10)*10 + 11})}">
+        다음<span class="page-icon">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+</div>
+<footer th:insert="~{fragments.html::footer}"></footer>
+</body>
+</html>

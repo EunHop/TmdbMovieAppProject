@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" href="/css/user_management.css">
+<head th:insert="~{fragments.html::header}">
+  <title>EunHop Movie App</title>
+</head>
+<body>
+<script src="/js/user_management.js" defer></script>
+<header th:insert="~{fragments.html::nav}"></header>
+<div class="container">
+  <div class="reviews_all_container">
+    <div th:if="${#strings.equals(param.id, allReviews.content.get(0).user.id)}" class="user_wrapper">
+      <span>해당 유저 이름 : </span>
+      <span class="user_name" th:text="${allReviews.content.get(0).user.name}"></span>
+      <span>해당 유저의 현재 권한 : </span>
+      <span th:text="${allReviews.content.get(0).user.role}"></span>
+      <div class="user_button_wrapper">
+        <button class="user_button" th:onclick="'user_authority_change_function('+${allReviews.content.get(0).user.id}+')'">해당 유저 한줄평 권한 변경</button>
+        <button class="user_button" th:onclick="'user_reviews_delete_all_function('+${allReviews.content.get(0).user.id}+')'">해당 유저 모든 한줄평 지우기</button>
+      </div>
+    </div>
+    <h1 class="h1">유저 한줄평 관리</h1>
+    <th:block th:each="reviews : ${allReviews}">
+      <ul class="entity_ul">
+        <li class="reviews_username">
+          <a class="reviews_username_link" th:href="@{/user/management/review(id=${reviews.user.id}, pageNo=0)}">
+            <span th:text="${reviews.user.name}"></span>
+          </a>
+        </li>
+        <li class="reviews_review">
+          <span th:text="${reviews.review}"></span>
+        </li>
+        <li class="reviews_video_title">
+          <span th:text="${reviews.video.title}"></span>
+        </li>
+        <li class="reviews_date">
+          <span th:text="${reviews.modifiedAt.getYear()}"></span>
+          <span th:if="${reviews.modifiedAt.getMonthValue()>=10}"
+                th:text="${'.'+reviews.modifiedAt.getMonthValue()}"></span>
+          <span th:unless="${reviews.modifiedAt.getMonthValue()>=10}"
+                th:text="${'.0'+reviews.modifiedAt.getMonthValue()}"></span>
+          <span th:if="${reviews.modifiedAt.getDayOfMonth()>=10}"
+                th:text="${'.'+reviews.modifiedAt.getDayOfMonth()}"></span>
+          <span th:unless="${reviews.modifiedAt.getDayOfMonth()>=10}"
+                th:text="${'.0'+reviews.modifiedAt.getDayOfMonth()}"></span>
+          <br>
+          <span th:if="${reviews.modifiedAt.getHour()>=10}" th:text="${reviews.modifiedAt.getHour()+':'}"></span>
+          <span th:unless="${reviews.modifiedAt.getHour()>=10}" th:text="${'0'+reviews.modifiedAt.getHour()+':'}"></span>
+          <span th:if="${reviews.modifiedAt.getMinute()>=10}" th:text="${reviews.modifiedAt.getMinute()}"></span>
+          <span th:unless="${reviews.modifiedAt.getMinute()>=10}" th:text="${'0'+reviews.modifiedAt.getMinute()}"></span>
+        </li>
+        <li class="delete" th:onclick="'user_review_delete_function('+${reviews.id}+')'">
+          <span class="delete_icon">close</span>
+        </li>
+      </ul>
+    </th:block>
+    <div class="page">
+      <a class="a_margin" th:if="${allReviews.getNumber()>=10}"
+         th:href="@{/user/management(pageNo=${(allReviews.getNumber/10)*10 -1})}">
+        <span class="page-icon">arrow_back</span>이전
+      </a>
+      <!--      1 ~ 마지막 페이지 번호의 10의 자리까지 -->
+      <th:block th:if="${allReviews.getTotalPages()>=10}"
+                th:each="tenPages : ${#numbers.sequence(1,allReviews.getTotalPages()/10)}">
+        <div th:if="${allReviews.getNumber()/10+1==tenPagesStat.current}">
+<!--          이전 번호들 - 현재 번호 - 다음 번호들 로 구성 되어 있음. -->
+          <th:block th:if="${allReviews.getNumber()>=tenPagesStat.count*10 -9 }"
+                    th:each="leftNum : ${#numbers.sequence(tenPagesStat.count*10 -9,allReviews.getNumber())}">
+            <a class="a_margin" th:href="@{/user/management(pageNo=${leftNum - 1})}"><span th:text="${leftNum}"></span></a>
+          </th:block>
+          <a class="a_margin" th:if="${allReviews.getNumber()!=allReviews.getTotalPages()}"
+             th:href="@{/user/management(pageNo=${allReviews.getNumber()})}"><span class="present_page"
+                                                                          th:text="${allReviews.getNumber() + 1}"></span></a>
+          <th:block th:if="${allReviews.getNumber()+2<=tenPagesStat.count*10}"
+                    th:each="rightNum : ${#numbers.sequence(allReviews.getNumber()+2,tenPagesStat.count*10)}">
+            <a class="a_margin" th:href="@{/user/management(pageNo=${rightNum - 1})}"><span th:text="${rightNum}"></span></a>
+          </th:block>
+        </div>
+      </th:block>
+      <!--      마지막 페이지 번호의 10의 자리 ~ 마지막 페이지까지 -->
+      <div th:if="${allReviews.getNumber()/10==allReviews.getTotalPages()/10}">
+        <!--          이전 번호들 - 현재 번호 - 다음 번호들 로 구성 되어 있음. -->
+        <th:block th:if="${(allReviews.getTotalPages()/10)*10+1<=allReviews.getNumber()}"
+                  th:each="lastLeftNum : ${#numbers.sequence((allReviews.getTotalPages()/10)*10+1,allReviews.getNumber())}">
+          <a class="a_margin" th:href="@{/user/management(pageNo=${lastLeftNum - 1})}"><span th:text="${lastLeftNum}"></span></a>
+        </th:block>
+        <a class="a_margin" th:if="${allReviews.getNumber()!=allReviews.getTotalPages()}"
+           th:href="@{/user/management(pageNo=${allReviews.getNumber()})}"><span class="present_page"
+                                                                        th:text="${allReviews.getNumber() + 1}"></span></a>
+        <th:block th:if="${allReviews.getNumber()+2<=allReviews.getTotalPages()}"
+                  th:each="lastRightNum : ${#numbers.sequence(allReviews.getNumber()+2,allReviews.getTotalPages())}">
+          <a class="a_margin" th:href="@{/user/management(pageNo=${lastRightNum - 1})}"><span
+              th:text="${lastRightNum}"></span></a>
+        </th:block>
+      </div>
+      <a th:if="${allReviews.getTotalPages()>10 && (allReviews.getNumber())/10 != (allReviews.getTotalPages()+1)/10}"
+         class="a_margin"
+         th:href="@{/user/management(pageNo=${(allReviews.getNumber/10)*10+10})}">
+        다음<span class="page-icon">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+</div>
+<footer th:insert="~{fragments.html::footer}"></footer>
+</body>
+</html>

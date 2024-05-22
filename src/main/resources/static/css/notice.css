@@ -1,0 +1,220 @@
+.container {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    width: 100%;
+    min-height: calc(100vh - 12rem);
+    display: flex;
+    justify-content: center;
+}
+.notice_container {
+    max-width: 70rem;
+    margin: 0 2rem 1rem;
+    padding-top: 1rem;
+    width: calc(100% - 4rem);
+}
+.notice_enabled_wrapper {
+    float: right;
+}
+.notice_enabled {
+    color: black;
+    margin: 0 0.5rem;
+}
+.notice_disabled {
+    color: black;
+}
+.active {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: lightgrey;
+}
+.notice_title_wrapper {
+    overflow: hidden;
+    border-bottom: 0.01rem solid lightgray;
+    clear: both;
+}
+.h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+.search {
+    float: right;
+    padding-bottom: 1rem;
+}
+.search input {
+    height: 2rem;
+    border-radius: 0.5rem;
+    padding: 0 1rem;
+}
+.search button {
+    height: 2rem;
+    border-radius: 0.5rem;
+    border: 0;
+    padding: 0.5rem;
+    cursor: pointer;
+    background-color: skyblue;
+}
+.notice_menu {
+    margin-top: 1rem;
+}
+.notice_number {
+    width: 10%;
+}
+.notice_title {
+    width: 50%;
+    font-weight: 500;
+    text-align: left;
+}
+.notice_date {
+    width: 20%;
+}
+.see_more {
+    width: 20%;
+    cursor: pointer;
+}
+.notice_content {
+    line-height: normal;
+    visibility: hidden;
+    height: 0;
+    color: white;
+    font-size: 0;
+    transition: all 0.5s;
+}
+.act {
+    padding: 3rem 5% 3rem;
+    visibility: visible;
+    height: auto;
+    color: black;
+    font-size: 0.9rem;
+    max-width: 68rem;
+    border-bottom: 0.01rem solid lightgray;
+}
+.notice_date_mobile {
+    display: none;
+}
+.notice_content_text_wrapper {
+    margin-bottom: 0.5rem;
+}
+.notice_button_wrapper {
+    overflow: hidden;
+}
+.notice_delete {
+    float: none;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: skyblue;
+    font-size: 0;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+}
+.modify_button_wrapper {
+    overflow: hidden;
+    display: flex;
+    float: right;
+}
+.notice_content_modify {
+    float: none;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: skyblue;
+    font-size: 0;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+}
+.modify_act {
+    width: 5rem;
+    height: 2rem;
+    float: right;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+.notice_content_modify_confirm {
+    float: right;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: skyblue;
+    font-size: 0.9rem;
+    width:  5rem;
+    height: 2rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+.notice_content_modify_cancel {
+    float: right;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: skyblue;
+    font-size: 0.9rem;
+    width:  5rem;
+    height: 2rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+.entity_ul {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 0.3rem 0;
+    font-weight: 300;
+    border-bottom: 0.01rem solid lightgray;
+}
+.notice_page {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.a_margin {
+    color: black;
+    padding: 0.5rem;
+}
+.present_page {
+    border: 0.1rem solid lightgray;
+    padding: 0.1rem;
+}
+.page-icon {
+    font-family: 'Material Symbols Rounded';
+    font-size: 1rem;
+}
+.see-icon {
+    font-family: 'Material Symbols Rounded';
+    font-size: 1.5rem;
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+}
+.notice_add {
+    float: right;
+    color: black;
+    width: 5rem;
+    height: 2rem;
+    text-align: center;
+    line-height: 2rem;
+    border-radius: 0.5rem;
+    background-color: lightgrey;
+    margin-top: 0.5rem;
+}
+@media (max-width: 650px) {
+    .notice_container {
+        margin: 0 0.5rem 1rem;
+        width: calc(100% - 1rem);
+    }
+    .notice_date {
+        visibility: hidden;
+    }
+    .notice_date_mobile {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    .act {
+        padding: 0.5rem 5% 0.5rem;
+    }
+    .modify_act {
+        width: 4rem;
+    }
+    .notice_content_modify_confirm {
+        width:  4rem;
+    }
+    .notice_content_modify_cancel {
+        width:  4rem;
+    }
+}

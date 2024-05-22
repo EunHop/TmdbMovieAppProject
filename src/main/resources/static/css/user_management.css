@@ -1,0 +1,95 @@
+.container {
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    width: 100%;
+    min-height: calc(100vh - 12rem);
+    display: flex;
+    justify-content: center;
+}
+.reviews_all_container {
+    max-width: 70rem;
+    margin: 0 2rem 1rem;
+    padding-top: 1rem;
+    width: calc(100% - 4rem);
+}
+.user_name {
+    margin-right: 0.5rem;
+}
+.user_button_wrapper {
+    margin-top: 0.5rem;
+}
+.user_button {
+    padding: 0.3rem;
+    border-radius: 0.5rem;
+    border: 0.01rem solid black;
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+.h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 1rem 0;
+    border-bottom: 0.01rem solid lightgray;
+}
+.entity_ul {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 0.3rem 0;
+    font-size: 0.9rem;
+    font-weight: 300;
+    border-bottom: 0.01rem solid lightgray;
+}
+.reviews_username {
+    width: 18%;
+    padding: 0 1%;
+}
+.reviews_username_link {
+    color: black;
+    font-weight: 500;
+}
+.reviews_review {
+    width: 28%;
+    padding: 0 1%;
+}
+.reviews_video_title {
+    width: 18%;
+    padding: 0 1%;
+}
+.reviews_date {
+    width: 18%;
+    padding: 0 1%;
+}
+.delete {
+    width: 8%;
+    padding: 0 1%;
+    cursor: pointer;
+}
+.delete_icon {
+    font-family: 'Material Symbols Rounded';
+    font-size: 1.5rem;
+    font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+}
+.page {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.a_margin {
+    color: black;
+    padding: 0.5rem;
+}
+.present_page {
+    border: 0.1rem solid lightgray;
+    padding: 0.1rem;
+}
+.page-icon {
+    font-family: 'Material Symbols Rounded';
+    font-size: 1rem;
+}
+@media (max-width: 650px) {
+    .reviews_all_container {
+        margin: 0 0.5rem 1rem;
+        width: calc(100% - 1rem);
+    }
+}

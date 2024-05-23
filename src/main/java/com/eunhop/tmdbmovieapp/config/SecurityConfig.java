@@ -66,7 +66,7 @@ public class SecurityConfig {
             // 정적 리소스들을 spring security 대상에서 제외
             .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
             .requestMatchers("/", "/login", "/signup").permitAll()
-            .requestMatchers(HttpMethod.GET, "/details/**", "/notice", "/search/**").permitAll()
+            .requestMatchers(HttpMethod.GET, "/details/**", "/notice/**", "/search/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/details/**").authenticated()
             .requestMatchers("/my_wishlist/**").authenticated()
             .requestMatchers("/notice/disabled").hasRole(Roles.ADMIN.name())

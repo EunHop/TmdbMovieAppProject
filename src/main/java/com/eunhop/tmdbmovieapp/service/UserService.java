@@ -50,14 +50,17 @@ public class UserService {
   }
 
   public boolean alreadySigned(User user) {
+    log.info("alreadySigned");
     return userRepository.existsByEmail(user.getEmail());
   }
 
   public Optional<User> findByEmail(String email) {
+    log.info("findByEmail");
     return userRepository.findByEmail(email);
   }
 
   public void authorityChange(long userId) {
+    log.info("authorityChange");
     Optional<User> user = userRepository.findById(userId);
     if(user.get().getRole() == Roles.USER) {
       user.get().setRole(Roles.USER_WITHOUT_WRITE);

@@ -2,12 +2,14 @@ package com.eunhop.tmdbmovieapp.jwt;
 
 import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -40,7 +42,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       HttpServletRequest request,
       HttpServletResponse response
   ) throws AuthenticationException {
-    // 로그인할 때 입력한 username과 password를 가지고 authenticationToken를 생성한다.
+    // 로그인할 때 입력한 username 과 password 를 가지고 authenticationToken 를 생성한다.
     UserDetails userDetails = customUserDetailsService.loadUserByUsername(request.getParameter("email"));
       UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
           userDetails,
@@ -60,7 +62,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       HttpServletResponse response,
       FilterChain chain,
       Authentication authResult
-  ) throws IOException {
+  ) throws IOException, ServletException {
+    SecurityContextHolder.getContext().setAuthentication(authResult);
     cookieService.createCookieUsingAuthentication(response, authResult);
 
     response.sendRedirect("/");

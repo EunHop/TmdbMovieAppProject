@@ -9,6 +9,7 @@ import com.eunhop.tmdbmovieapp.dto.tmdb.VideoDto;
 import com.eunhop.tmdbmovieapp.repository.UserAndVideoRepository;
 import com.eunhop.tmdbmovieapp.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +30,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class VideoService {
 
   @Value("${tmdb.api.key}")
@@ -120,20 +122,24 @@ public class VideoService {
   }
 
   public List<UserAndVideo> findAllReview(int id) {
+    log.info("findAllReview");
     return userAndVideoRepository.findByVideoIdAndReviewIsNotNull(id);
   }
 
   public List<UserAndVideo> findAllReviewExceptMine(int id, Long userId) {
+    log.info("findAllReviewExceptMine");
     List<Long> userList = new ArrayList<>();
     userList.add(userId);
     return userAndVideoRepository.findByVideoIdAndUserIdNotInAndReviewIsNotNull(id, userList);
   }
 
   public UserAndVideo findMyReview(int id, Long userId) {
+    log.info("findMyReview");
     return userAndVideoRepository.findByUserIdAndVideoId(userId, id);
   }
 
   public void saveReview(User user, ReviewDto reviewDto) {
+    log.info("saveReview");
     UserAndVideo existEntity = userAndVideoRepository.findByUserIdAndVideoId(user.getId(), reviewDto.getId());
     if (existEntity != null) {
       existEntity.setReview(reviewDto.getReview());
@@ -154,6 +160,7 @@ public class VideoService {
   }
 
   public void deleteReview(User user, ReviewDto reviewDto) {
+    log.info("deleteReview");
     UserAndVideo existEntity = userAndVideoRepository.findByUserIdAndVideoId(user.getId(), reviewDto.getId());
     if (existEntity.isWish()) {
       existEntity.setReview(null);
@@ -164,6 +171,7 @@ public class VideoService {
   }
 
   public void wishSetting(User user, ReviewDto reviewDto) {
+    log.info("wishSetting");
     UserAndVideo existEntity = userAndVideoRepository.findByUserIdAndVideoId(user.getId(), reviewDto.getId());
     if (existEntity != null) {
       if(existEntity.getReview() == null || existEntity.getReview().isEmpty()) {
@@ -197,15 +205,18 @@ public class VideoService {
   }
 
   public List<UserAndVideo> findMyWishlist(User user) {
+    log.info("findMyWishlist");
     return userAndVideoRepository.findByUserIdOrderByCreatedAt(user.getId());
   }
 
   public List<UserAndVideo> findMyWishlistOrderByDate(User user) {
+    log.info("findMyWishlistOrderByDate");
     List<UserAndVideo> userAndVideos =  userAndVideoRepository.findByUserIdOrderByCreatedAt(user.getId());
     return userAndVideos.stream().sorted(Comparator.comparing(userAndVideo -> userAndVideo.getVideo().getRelease_date())).toList();
   }
 
   public void wishlistWishSetting(User user, int id) {
+    log.info("wishlistWishSetting");
     UserAndVideo existEntity = userAndVideoRepository.findByUserIdAndVideoId(user.getId(), id);
       if(existEntity.getReview() == null || existEntity.getReview().isEmpty()) {
         if (existEntity.isWish()) {
@@ -226,21 +237,25 @@ public class VideoService {
   }
 
   public Page<UserAndVideo> findAnyReviews(int pageNo, String sort) {
+    log.info("findAnyReviews");
     Pageable pageable = PageRequest.of(pageNo, 8, Sort.by(Sort.Direction.DESC, sort));
     return userAndVideoRepository.findByReviewIsNotNull(pageable);
   }
 
   public void reviewDelete(long id) {
+    log.info("reviewDelete");
     Optional<UserAndVideo> find = userAndVideoRepository.findById(id);
     userAndVideoRepository.delete(find.get());
   }
 
   public Page<UserAndVideo> findUserReviews(long id, int pageNo, String sort) {
+    log.info("findUserReviews");
     Pageable pageable = PageRequest.of(pageNo, 8, Sort.by(Sort.Direction.DESC, sort));
     return userAndVideoRepository.findByUserIdAndReviewIsNotNull(id, pageable);
   }
 
   public void userReviewsDeleteAll(long userId) {
+    log.info("userReviewsDeleteAll");
     List<UserAndVideo> userReviews = userAndVideoRepository.findByUserIdAndReviewIsNotNull(userId);
     userAndVideoRepository.deleteAll(userReviews);
   }

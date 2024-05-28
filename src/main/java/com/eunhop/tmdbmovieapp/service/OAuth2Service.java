@@ -6,6 +6,7 @@ import com.eunhop.tmdbmovieapp.domain.User;
 import com.eunhop.tmdbmovieapp.repository.OAuth2Repository;
 import com.eunhop.tmdbmovieapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class OAuth2Service {
 
   private final UserRepository userRepository;
@@ -27,6 +29,7 @@ public class OAuth2Service {
       String resName,
       String provider
   ) {
+    log.info("userAndOAuth2DBSave");
     Optional<User> user = userRepository.findByEmail(resEmail);
     Optional<OAuth2> existOauth2 = oAuth2Repository.findByProviderAndEmail(provider, resEmail);
     OAuth2 oauth2 = OAuth2.builder()

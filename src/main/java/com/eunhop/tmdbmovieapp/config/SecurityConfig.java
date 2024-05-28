@@ -12,12 +12,14 @@ import com.eunhop.tmdbmovieapp.oauth2.OAuth2SuccessHandler;
 import com.eunhop.tmdbmovieapp.service.CustomUserDetailsService;
 import com.eunhop.tmdbmovieapp.service.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.InMemoryOAuth2AuthorizedClientService;
@@ -63,8 +65,6 @@ public class SecurityConfig {
         .apply(new MyCustomDsl());
     // authorization
     http.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-            // 정적 리소스들을 spring security 대상에서 제외
-            .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
             .requestMatchers("/login", "/signup").permitAll()
             .requestMatchers(HttpMethod.GET, "/", "/details/**", "/notice/**", "/search/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/details/**").authenticated()
@@ -75,15 +75,6 @@ public class SecurityConfig {
             // 허용한 범위 외의 요청 다 막기
             .anyRequest().hasRole(Roles.ADMIN.name())
         )
-        /*
-      WARNING 문제 You are asking Spring Security to ignore org.springframework.boot.autoconfigure.security.servlet.StaticResourceRequest
-      처음엔 이 코드로 작성해서 필터를 거치지않고 정적 리소스들을 spring security 대상에서 제외시켰는데 서버 실행시 warning 이 발생하였다.
-      permitAll() 을 더 권장했다.
-      @Bean
-      public WebSecurityCustomizer configure() {
-        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-      }
-      */
         // login
         .formLogin(login -> login
             .loginPage("/login")
@@ -113,6 +104,15 @@ public class SecurityConfig {
     ;
     return http.build();
   }
+
+  // 정적 리소스들을 spring security 대상에서 제외
+  // .requestMatchers("/css/**", "/images/**", "/js/**").permitAll() 을 쓰면 정적 리소스들이 필터를 타면서
+  // CustomUserDetailsService 를 여러번 돌게 된다. 의미없는 동작이므로 필터에서 완전히 제외시키기 위해 이 메소드를 사용하였다.
+  @Bean
+  public WebSecurityCustomizer configure() {
+    return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+  }
+
 
   @Bean
   public OAuth2AuthorizedClientService authorizedClientService() {

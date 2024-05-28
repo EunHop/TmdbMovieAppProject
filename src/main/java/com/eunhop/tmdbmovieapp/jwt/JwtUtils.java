@@ -4,14 +4,17 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwsHeader;
 import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.util.Pair;
 
 import java.security.Key;
 import java.util.Date;
 
+@Slf4j
 public class JwtUtils {
     /**
      * 토큰에서 userEmail 찾기
+     * 제대로된 토큰인지 검증과정
      *
      * @param token 토큰
      * @return userEmail
@@ -56,8 +59,8 @@ public class JwtUtils {
         } catch (ExpiredJwtException e) {
             return false;
         } catch (Exception ge) {
-            System.out.println("재로그인 하고 오시오!");
-            return true;
+            log.info("please login again!");
+            return false;
         }
     }
 

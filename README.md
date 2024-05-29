@@ -71,14 +71,14 @@
 
 ### JWT
 
-JWT(Json Web Token)는 **토큰 기반 인증방식으로 인증에 필요한 정보들을 Token에 담아
+JWT(Json Web Token)는 **토큰 기반 인증방식으로 인증에 필요한 정보들을 Token 에 담아
 암호화시켜 쿠키**에 담아 사용합니다.
 
-쿠키는 **XSS(Cross Site Scripting) 공격 이나 패킷을 감청해 탈취**될 수
+쿠키는 **XSS(Cross Site Scripting) 공격, 패킷을 감청, CSRF(Cross-Site Request Forgery) 공격으로 탈취**될 수
 
 있습니다.
 
-따라서 해당 공격을 예방하기 위해 쿠키를 생성할 때 **HttpOnly와 Secure 옵션을
+따라서 해당 공격을 예방하기 위해 쿠키를 생성할 때 **httpOnly, secure, sameSite="Lax" 옵션을
 지정**해줬습니다.
 
 ---

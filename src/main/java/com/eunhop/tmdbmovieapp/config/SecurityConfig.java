@@ -52,9 +52,9 @@ public class SecurityConfig {
       CustomOAuth2UserService customOAuth2UserService,
       GoogleOAuth2UserService googleOAuth2UserService
   ) throws Exception {
-    http.
+    http
         // basic authentication
-            httpBasic(AbstractHttpConfigurer::disable) // basic authentication filter 비활성화
+        .httpBasic(AbstractHttpConfigurer::disable) // basic authentication filter 비활성화
         // csrf
         .csrf(AbstractHttpConfigurer::disable)
         // remember-me
@@ -112,7 +112,6 @@ public class SecurityConfig {
   public WebSecurityCustomizer configure() {
     return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
   }
-
 
   @Bean
   public OAuth2AuthorizedClientService authorizedClientService() {

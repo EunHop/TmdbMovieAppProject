@@ -68,7 +68,7 @@ public class JwtUtils {
      * Principal 로 Access 토큰 생성
      * HEADER : alg, kid
      * PAYLOAD : sub, iat, exp
-     * SIGNATURE : JwtKey.getRandomKey로 구한 Secret Key로 HS512 해시
+     * SIGNATURE : JwtKey.getRandomKey 로 구한 Secret Key 로 HS512 해시
      *
      * @param value email
      * @return jwtToken

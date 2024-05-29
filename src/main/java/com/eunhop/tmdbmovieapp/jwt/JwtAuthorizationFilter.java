@@ -9,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -79,12 +80,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         else {
           String newAccessToken = JwtUtils.createAccessToken(refresh.get().getUser().getEmail());
           jwtService.updateNewAccessToken(newAccessToken, refresh);
-          Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN.getDescription(), newAccessToken);
-          cookie1.setMaxAge(JwtProperties.ACCESS_TOKEN.getTime()); // 쿠키의 만료시간 설정
-          cookie1.setSecure(true);
-          cookie1.setHttpOnly(true);
-          cookie1.setPath("/");
-          response.addCookie(cookie1);
+          // sameSite 를 명시적으로 Lax 로 지정하기 위해 Cookie 에서 ResponseCookie 로 바꿨다.
+          ResponseCookie cookie1 = ResponseCookie.from(JwtProperties.ACCESS_TOKEN.getDescription(), newAccessToken)
+              .maxAge(JwtProperties.ACCESS_TOKEN.getTime()) // 쿠키의 만료시간 설정
+              .secure(true)
+              .httpOnly(true)
+              .sameSite("Lax")
+              .path("/")
+              .build();
+          response.addHeader("Set-Cookie", cookie1.toString());
           Authentication authentication = getUsernamePasswordAuthenticationToken(newAccessToken);
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }

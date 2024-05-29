@@ -82,6 +82,7 @@ public class VideoController {
   }
 
   @PostMapping("/details")
+  // "success" 를 반환한다. success 는 ajax 의 success 메소드로 들어간다.
   @ResponseBody
   public String reviewAndWish(@AuthenticationPrincipal PrincipalUser principalUser,
                               ReviewDto reviewDto

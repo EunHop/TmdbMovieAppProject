@@ -3,7 +3,7 @@ function wish() {
         url: '/details',
         method: "POST",
         data: $('#wish_form').serialize(),
-        success: function () {
+        success: function () { // 컨트롤러에서 반환된 success 로 인해 success 함수가 실행된다.
             location.replace(location.href);
         }
     })

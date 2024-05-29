@@ -2,10 +2,10 @@ package com.eunhop.tmdbmovieapp.jwt;
 
 import com.eunhop.tmdbmovieapp.domain.User;
 import com.eunhop.tmdbmovieapp.service.JwtService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +16,7 @@ public class CookieService {
   private final JwtService jwtService;
 
   public void createCookieUsingAuthentication(HttpServletResponse response, Authentication authentication) {
-    if(jwtService.dataAlreadyExist(authentication.getName())) {
+    if (jwtService.dataAlreadyExist(authentication.getName())) {
       log.info("jwtToken already exist so I removed it");
     } else {
       log.info("jwtToken not exist so I created it");
@@ -29,7 +29,7 @@ public class CookieService {
   }
 
   public void createCookieUsingUser(HttpServletResponse response, User user) {
-    if(jwtService.dataAlreadyExist(user.getEmail())) {
+    if (jwtService.dataAlreadyExist(user.getEmail())) {
       log.info("jwtToken already exist so I removed it");
     } else {
       log.info("jwtToken not exist so I created it");
@@ -42,28 +42,35 @@ public class CookieService {
   }
 
   public void createCookie(HttpServletResponse response, String jwtAccessToken, String jwtRefreshToken) {
-    Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN.getDescription(), jwtAccessToken);
-    cookie1.setMaxAge(JwtProperties.ACCESS_TOKEN.getTime()); // 쿠키의 만료시간 설정
-    cookie1.setSecure(true);
-    cookie1.setHttpOnly(true);
-    cookie1.setPath("/");
-    Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN.getDescription(), jwtRefreshToken);
-    cookie2.setMaxAge(JwtProperties.REFRESH_TOKEN.getTime()); // 쿠키의 만료시간 설정
-    cookie2.setSecure(true);
-    cookie2.setHttpOnly(true);
-    cookie2.setPath("/");
-    response.addCookie(cookie1);
-    response.addCookie(cookie2);
+    // sameSite 를 명시적으로 Lax 로 지정하기 위해 Cookie 에서 ResponseCookie 로 바꿨다.
+    ResponseCookie cookie1 = ResponseCookie.from(JwtProperties.ACCESS_TOKEN.getDescription(), jwtAccessToken)
+        .maxAge(JwtProperties.ACCESS_TOKEN.getTime()) // 쿠키의 만료시간 설정
+        .secure(true)
+        .httpOnly(true)
+        .path("/")
+        .sameSite("Lax")
+        .build();
+    ResponseCookie cookie2 = ResponseCookie.from(JwtProperties.REFRESH_TOKEN.getDescription(), jwtRefreshToken)
+        .maxAge(JwtProperties.REFRESH_TOKEN.getTime()) // 쿠키의 만료시간 설정
+        .secure(true)
+        .httpOnly(true)
+        .path("/")
+        .sameSite("Lax")
+        .build();
+    response.addHeader("Set-Cookie", cookie1.toString());
+    response.addHeader("Set-Cookie", cookie2.toString());
   }
 
   public void deleteCookie(HttpServletResponse response) {
-    Cookie cookie1 = new Cookie(JwtProperties.ACCESS_TOKEN.getDescription(), null);
-    cookie1.setMaxAge(0);
-    cookie1.setPath("/"); // 모든 경로에서 삭제됐음을 알린다.
-    Cookie cookie2 = new Cookie(JwtProperties.REFRESH_TOKEN.getDescription(), null);
-    cookie2.setMaxAge(0);
-    cookie2.setPath("/");
-    response.addCookie(cookie1);
-    response.addCookie(cookie2);
+    ResponseCookie cookie1 = ResponseCookie.from(JwtProperties.ACCESS_TOKEN.getDescription(), null)
+        .maxAge(0)
+        .path("/")
+        .build(); // 모든 경로에서 삭제됐음을 알린다.
+    ResponseCookie cookie2 = ResponseCookie.from(JwtProperties.REFRESH_TOKEN.getDescription(), null)
+        .maxAge(0)
+        .path("/")
+        .build(); // 모든 경로에서 삭제됐음을 알린다.
+    response.addHeader("Set-Cookie", cookie1.toString());
+    response.addHeader("Set-Cookie", cookie2.toString());
   }
 }
